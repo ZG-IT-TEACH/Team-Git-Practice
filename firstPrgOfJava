@@ -1,0 +1,387 @@
+//Beginning.java
+package sss;
+import java.util.Scanner;  
+
+public class Begining {
+	private static InputInfo input = new InputInfo();
+	private static InputInfo input2 = new InputInfo();
+    private static Scanner in = new Scanner(System.in);
+	public static void main(String[] args) {                                          //主方法在这里~
+		System.out.println("启动学生管理系统"); 
+		CTeacher teacher = new CTeacher("101","wang","m");
+		input2.getList2().add(teacher);
+		CStudent student1 = new CStudent("2017111","xiaoming","m",78);
+		CStudent student2 = new CStudent("2017121","xiaohei","m",89);
+		input.getList().add(student1);
+		input.getList().add(student2);
+		
+		//final InputInfo input = new InputInfo();
+		//final InputInfo input2 = new InputInfo();
+
+		boolean god = true;
+		do                                                              //程序运行开始了
+		{
+			System.out.println("----------系统功能-------------");
+			System.out.println("1.学生信息管理"+"     "+"2.退出");
+			System.out.println("请输入你要操作的选项：");
+			int get = in.nextInt();                 //选择1.2
+			//god = menu1(get);
+			menu1(get);
+			if(god)
+			{
+				System.out.println("系统退出");
+				System.out.println("输出增删改查后全部信息：");                     //为了不使退出显得很突兀。。。
+				CStudent stu = null;
+		    	for(int i = 0;i < input.getSize(); i++)                  
+		    	{
+		    		stu = (CStudent)input.getList().get(i);
+		    		System.out.println(stu.getname()+"   "+stu.getnum()+"   "+stu.getsex()+"   "+stu.getscore());
+		    	}
+	    		System.exit(0);
+			}
+		}while(true);	                                                //程序运行结束了
+	}
+
+	
+	public static boolean menu1(int number)        
+    {
+    	boolean find = false;
+    	boolean find2 = false;
+    	boolean judge = true;
+    	switch (number){
+    	case 1:                                                        
+    	{
+    		int i;
+    		System.out.println("我们需要验证你的身份,请输入你的工号/学号：");
+    		do {                                                                
+    		     String num = in.next();
+    		     for(i = 0;i < input.getSize() ;i++)
+    		     {
+    			     if(input.getList().get(i).getnum().equals(num))
+    			     { 	 
+    				     find = true;
+    				     System.out.println("身份验证成功！你的身份是学生");
+    				     System.out.println("4.查看"+"   "+"5.查看全部信息"+"   "+"6.返回");
+    				     System.out.println("请输入你要执行的操作：");
+    			     }
+    		       }   
+			      for(i = 0;i < input2.getSize2() ;i++)
+    		      {
+    			      if(input2.getList2().get(i).getnum().equals(num))
+    			      {
+    				
+    				    find2 = true;
+    				    System.out.println("身份验证成功！您的身份是教师");
+    				    System.out.println("1.新增"+"   "+"2.修改"+"   "+"3.删除"+"   "+"4.查看"+"   "+"5.查看全部信息"+"   "+"6.返回");
+    				    System.out.println("请输入你要执行的操作：");
+    			      }
+    		      }
+			      if(find == false && find2 == false)
+			      {
+				     judge = false;
+				     System.out.println("您输入的用户不存在，请重新输入：");
+				
+			      }
+    		}while(!judge);
+    		int get2 = in.nextInt();
+    		menu2(get2);
+    	}
+    	case 2:
+    	{
+    		judge = false;
+    		
+    	}
+    	}
+    	return judge;
+    }
+    static void menu2(int number)
+    {
+    	switch (number){
+    	case 1:
+    	{
+    		addInfo();
+    		break;
+    	}
+    	case 2:
+    	{
+    		modifyInfo();
+    		break;
+    	}
+    	case 3:
+    	{
+    		deleInfo();
+    		break;
+    	}
+    	case 4:
+    	{
+    		viewInfo();
+    		break;
+    	}
+    	case 5:
+    	{
+    		godview();
+    		break;
+    	}
+    	}
+    }
+	static void addInfo(){                                           //增
+    	System.out.println("输入你要添加的学生信息：");
+    	System.out.println("学号：   姓名：    性别：     分数：");
+    	String number= in.next();
+    	String name = in.next();
+    	String sex = in.next();
+    	int score = in.nextInt();
+    	CStudent student = new CStudent(number,name,sex,score);
+    	input.add(student);
+    	
+    }
+    static void deleInfo(){                                       //删
+    	System.out.println("请输入要删除的学生学号:");
+    	boolean find = false;
+    	do{
+    	    String number = in.next();
+    	    for(int i = 0;i < input.getSize(); i++)
+    	     {
+			    if(input.getList().get(i).getnum().equals(number))
+    		     {
+    			   input.getList().remove(i);
+    			   find = true;
+    		     }
+    	     }
+    	    if(find == true)
+    	    {
+    		    System.out.println("删除成功！");
+    	    }
+    	    else
+    	    {
+    		    System.out.println("查无此人！！！，请重新输入学号:");
+    	    }
+           }while(!find);
+    }
+    static void viewInfo(){                                          //查
+    	System.out.println("请输入要查找的学生编号：");
+    	CStudent stu = null;
+    	boolean find = false;
+    	do{
+    		String number = in.next();
+    		 for(int i = 0;i < input.getSize(); i++)
+    	     {
+			    if(input.getList().get(i).getnum().equals(number))
+    		     {
+			    	stu = (CStudent)input.getList().get(i);
+    			   find = true;
+    		     }
+    	     }
+    		 if(find == true)
+    		 {
+    			 System.out.println("姓名："+stu.getname()+"   "+"学号："+stu.getnum()+"   "+"性别："+stu.getsex()+"   "+"成绩："+stu.getscore());
+    		 }
+    		 else
+    		 {
+    			 System.out.println("查无此人，请重新输入编号：");
+    		 }
+    	}while(!find);
+    }
+    
+    
+	static void modifyInfo(){                                     //改
+    	System.out.println("请输入你要修改的学生的学号：");
+    	boolean find = false;
+    	CStudent stu = null;
+    	String number;
+    	do{
+    		number = in.next();
+    		for(int i = 0;i < input.getSize(); i++)
+   	        {
+			    if(input.getList().get(i).getnum().equals(number))
+   		       {
+			    	stu = (CStudent)input.getList().get(i);
+   			      find = true;
+   		       }
+   	       }
+    		if(find == true)
+    		{
+    			System.out.println("请输入你修改后的名字：");
+    			String name = in.next();
+    			System.out.println("请输入你修改后的性别：");
+    			String sex = in.next();
+    			System.out.println("请输入你修改后的成绩：");
+    			int score = in.nextInt();
+    			stu.setname(name);
+    			stu.setsex(sex);
+    			stu.setscore(score);
+    			System.out.println("修改信息成功！");
+    		}
+    		else
+    		{
+    			System.out.println("查无此人，请再次输入学号:");
+    		}
+    	}while(!find);
+    }
+    static void godview()
+    {
+    	CStudent stu = null;
+    	for(int i = 0;i < input.getSize(); i++)
+    	{
+    		stu = (CStudent)input.getList().get(i);
+    		System.out.println(stu.getname()+"   "+stu.getnum()+"   "+stu.getsex()+"   "+stu.getscore());
+    	}
+    }
+} 
+
+
+
+
+
+
+
+
+
+
+//InputInfo.java
+package sss;
+import java.util.ArrayList;
+import java.util.List;
+
+public class InputInfo {
+	private List <CStudent> Input = new ArrayList<>();
+	private List <CTeacher> Input2 = new ArrayList<>();
+	public InputInfo(){};
+    public void add(CStudent a)              //添加一个学生
+    {
+    	Input.add(a);
+    }
+    public int getSize()                   //返回学生总数
+    {
+    	return Input.size();
+    }
+    public int getSize2()                   //返回老师个数
+    {
+    	return Input2.size();
+    }
+    public void add2(CTeacher a)             //添加一个教师
+    {
+    	Input2.add(a);
+    }
+    public List<CStudent> getList()          //返回list
+    {
+    	return Input;
+    }
+    public List<CTeacher> getList2()        //返回list2
+    {
+    	return Input2;
+    }
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+//CStudent.java
+package sss;
+public class CStudent extends CPerson{
+	private int score;
+	public CStudent(){};
+	public CStudent(String a,String b,String sex,int d){
+		super(a,b,sex);
+		score = d;
+	}
+	public void setscore(int a)
+    {
+    	 score = a;
+    }
+    public int getscore()
+    {
+    	return score;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+//CPerson.java
+package sss;
+
+public abstract class CPerson {
+	private String number;
+	private String name;
+	private String sex;
+	public CPerson(){}
+    public CPerson(String a,String b,String c)
+    {
+    	number = a;
+    	name = b;
+    	sex = c;
+    }
+    public void setnum(String a)
+    {
+    	number = a;
+    }
+    public String getnum()
+    {
+    	return number;
+    }
+    public void setname(String a)
+    {
+    	name = a;
+    }
+    public String getname()
+    {
+    	return name;
+    }
+    public void setsex(String a)
+    {
+    	sex = a;
+    }
+    public String getsex()
+    {
+    	return sex;
+    }
+   
+}
+
+
+
+
+
+
+
+
+
+//CTeacher.java
+package sss;
+
+public class CTeacher extends CPerson{
+	private CStudent s;
+	public CTeacher(String a,String b,String c)
+	{
+		super(a,b,c);
+	}
+	public void addInfo()
+	{
+		s.getname();
+		s.getnum();
+		s.getsex();
+		s.getscore();
+	}
+
+}
+
+
+
+
+
